@@ -1,0 +1,13 @@
+[
+  {
+    "id": "1c1f8120-2555-4aff-a892-094473e88e3f",
+    "name": "Object 01",
+    "roles": [
+      "roleId"
+    ],
+    "createdOn": 121,
+    "createdBy": "id",
+    "modifiedOn": 1212,
+    "modifiedBy": ""
+  }
+]
