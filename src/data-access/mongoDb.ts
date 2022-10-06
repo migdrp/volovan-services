@@ -1,3 +1,5 @@
+///<reference path="../types/types.d.ts" />
+
 import { MongoClient } from 'mongodb';
 import { Logger } from '../utils/Logger';
 

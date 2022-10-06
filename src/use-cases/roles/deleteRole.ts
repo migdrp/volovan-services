@@ -1,5 +1,6 @@
+///<reference path="../../types/types.d.ts" />
+
 import { dep } from '.';
-import { VolovanRole } from '../../entities';
 import { Logger } from '../../utils';
 
 const log = new Logger('Delete Role Use Case');

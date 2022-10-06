@@ -1,3 +1,5 @@
+///<reference path="../types/types.d.ts" />
+
 import express from 'express';
 import { ExpressCallback } from '../utils';
 import { validateToken } from '../middlewares';

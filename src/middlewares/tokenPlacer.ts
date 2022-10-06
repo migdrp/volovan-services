@@ -1,3 +1,5 @@
+///<reference path="../types/types.d.ts" />
+
 import { NextFunction, Response, Request } from 'express';
 import { Logger } from '../utils';
 

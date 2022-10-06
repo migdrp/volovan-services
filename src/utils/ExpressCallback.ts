@@ -1,3 +1,4 @@
+///<reference path="../types/types.d.ts" />
 import { Response, Request } from 'express';
 import { Logger } from './Logger';
 

@@ -1,3 +1,4 @@
+///<reference path="../types/types.d.ts" />
 import { argv } from 'yargs';
 import dotenv from 'dotenv';
 

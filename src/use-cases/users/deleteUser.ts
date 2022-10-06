@@ -1,3 +1,5 @@
+///<reference path="../../types/types.d.ts" />
+
 import { dep } from '.';
 import { Logger } from '../../utils';
 

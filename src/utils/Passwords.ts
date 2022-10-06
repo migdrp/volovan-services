@@ -1,3 +1,4 @@
+///<reference path="../types/types.d.ts" />
 import bcrypt from "bcrypt";
 import passwordValidator from 'password-validator';
 

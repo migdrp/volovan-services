@@ -1,7 +1,9 @@
+///<reference path="../types/types.d.ts" />
+
+
 import express, { NextFunction, Response, Request } from 'express';
 import { verifyUserData, saveUserToken, refreshUserToken, destroyUserToken } from '../use-cases/auth';
 import { Logger } from '../utils/Logger';
-import { dep } from '.';
 
 const log = new Logger('Auth Router');
 

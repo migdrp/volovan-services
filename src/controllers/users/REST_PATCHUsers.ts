@@ -1,3 +1,5 @@
+///<reference path="../../types/types.d.ts" />
+
 
 import { Logger } from '../../utils';
 import { editeUser } from '../../use-cases/users';
