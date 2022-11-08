@@ -143,7 +143,23 @@ export class mongoDbAdapter {
 
   public async insertMany(data: any[], collection: string): Promise<DataAccess.mongoDbAdapterResponse> {
     try {
-      return
+
+      const ids = []
+      const sanitazedData = data.map(item => {
+        const newItem = { ...item };
+        ids.push(newItem.id);
+        newItem._id = newItem.id;
+        delete newItem.id;
+        return newItem;
+      });
+
+
+      const mogngoDb = new dep.MongoDatabase();
+      const db = await mogngoDb.initDb(this.dbName);
+      await db.collection(collection).insertMany(sanitazedData);
+      const result = await this.findManyWithIdsAray(ids, collection);
+      return result;
+
     } catch (error) {
       throw new Error(`Error inserting items on ${collection} collection: ${error}`);
     }
@@ -215,6 +231,12 @@ export class mongoDbAdapter {
       const mogngoDb = new dep.MongoDatabase();
       const db = await mogngoDb.initDb(this.dbName);
       const newQuery = { ...query };
+
+      if (newQuery.id !== null && newQuery.id !== undefined) {
+        newQuery._id = newQuery.id;
+        delete newQuery.id
+      }
+
       const found = db.collection(collection).find(newQuery);
       const result = (await found.toArray()).map(({ _id: id, ...found }: any) => ({
         id,

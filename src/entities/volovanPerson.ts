@@ -5,12 +5,14 @@ import { Logger } from '../utils/Logger';
 const log = new Logger('Volovan Role Entty');
 
 
-export class VolovanRole {
+export class VolovanPerson {
 
   id: string;
-  name: string;
-  description: string;
-  dynamicRoutes: Object;
+  firstNames: string;
+  lastNames: string;
+  phone: string;
+  email: string;
+  address: string;
 
   createdOn: number;
   createdBy: string;
@@ -21,24 +23,36 @@ export class VolovanRole {
 
   constructor({
     id = dep.Id.makeId(),
-    name,
-    description = 'Role without description.',
-    dynamicRoutes,
+    firstNames,
+    lastNames,
+    phone,
+    email,
+    address,
+
 
     createdOn = Date.now(),
     createdBy,
     modifiedOn = Date.now(),
     modifiedBy,
     deleted = false
-  }: Entities.Roles.RoleData) {
+  }: Entities.Persons.PersonData) {
 
     if (!dep.Id.isValidId(id))
-      throw new Error('Role must have a valid id.')
+      throw new Error('Person must have a valid id.')
+    if (!firstNames)
+      throw new Error('First names are required.')
+    if (!lastNames)
+      throw new Error('Last names are required.')
+    if (!email)
+      throw new Error('Email is required.')
+
 
     this.id = id;
-    this.name = name;
-    this.description = description;
-    this.dynamicRoutes = dynamicRoutes;
+    this.firstNames = firstNames;
+    this.lastNames = lastNames;
+    this.phone = phone;
+    this.email = email;
+    this.address = address;
 
     this.createdOn = createdOn;
     this.createdBy = createdBy;
@@ -51,9 +65,11 @@ export class VolovanRole {
   getData = () => {
     return {
       id: this.id,
-      name: this.name,
-      description: this.description,
-      dynamicRoutes: this.dynamicRoutes,
+      firstNames: this.firstNames,
+      lastNames: this.lastNames,
+      phone: this.phone,
+      email: this.email,
+      address: this.address,
 
       createdOn: this.createdOn,
       createdBy: this.createdBy,

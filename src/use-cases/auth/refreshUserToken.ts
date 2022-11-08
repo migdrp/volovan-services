@@ -13,7 +13,7 @@ export const refreshUserToken = async (token: string) => {
 
     //log.debug('validatedToken: ', validatedToken)
 
-    const tokenExist: Entities.Auth.TokenData[] = await dep.volovanDb.findByQuery({ _id: userData.id, token: token }, 'tokens');
+    const tokenExist: Entities.Auth.TokenData[] = await dep.volovanDb.findByQuery({ id: userData.id, token: token }, 'tokens');
     //log.debug('tokenExist: ', tokenExist)
 
 

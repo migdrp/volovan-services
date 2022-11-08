@@ -1,5 +1,5 @@
 import { Logger, Environment } from './utils';
-import { usersRouter, authRoutes, rolesRouter } from './routes';
+import { usersRouter, authRoutes, rolesRouter, eventsRouter, personsRouter, participantsRouter, ticketsRouter } from './routes';
 import { tokenPlacer, validateToken } from './middlewares';
 
 import cookieParser from 'cookie-parser';
@@ -32,6 +32,10 @@ async function main() {
 
     app.use('/api', usersRouter);
     app.use('/api', rolesRouter);
+    app.use('/api', personsRouter);
+    app.use('/api', participantsRouter);
+    app.use('/api', eventsRouter);
+    app.use('/api', ticketsRouter);
     app.use('/auth', authRoutes);
 
     app.listen(process.env.PORT);

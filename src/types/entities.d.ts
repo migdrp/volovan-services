@@ -39,6 +39,109 @@ declare module Entities {
     }
   }
 
+  export namespace Persons {
+    type VolvoanPerson = typeof import('../entities/volovanPerson').VolovanPerson
+
+    interface PersonData {
+      id?: string;
+      firstNames?: string;
+      lastNames?: string;
+      phone?: string;
+      email?: string;
+      address?: string;
+
+      createdOn?: number;
+      createdBy?: string;
+      modifiedOn?: number;
+      modifiedBy?: string;
+      deleted?: boolean;
+    }
+  }
+
+  export namespace Participants {
+    type VolovanParticipant = typeof import('../entities/volovanParticipant').VolovanParticipant
+
+    interface ParticipantData {
+      id?: string;
+      name?: string;
+      type?: string;
+      images?: ParticipantImage[];
+      docs?: ParticipantFile[];
+      description?: string;
+      tickets?: string[];
+      persons?: string[];
+
+
+
+      createdOn?: number;
+      createdBy?: string;
+      modifiedOn?: number;
+      modifiedBy?: string;
+      deleted?: boolean;
+    }
+
+    interface ParticipantImage {
+      name?: string;
+      uri?: string;
+    }
+
+    interface ParticipantFile {
+      name?: string;
+      description?: string;
+      uri?: string;
+    }
+  }
+
+  export namespace Events {
+    type VolovanEvent = typeof import('../entities/volovanEvent').VolovanEvent
+
+    interface EventData {
+      id?: string;
+      name?: string;
+      description?: string;
+      dateTimes?: number[];
+      participants?: string[];
+      tickets?: string[];
+
+
+
+      createdOn?: number;
+      createdBy?: string;
+      modifiedOn?: number;
+      modifiedBy?: string;
+      deleted?: boolean;
+    }
+  }
+
+  export namespace Tickets {
+    type VolovanTicket = typeof import('../entities/volovanTicket').VolovanTicket
+
+    interface TicketData {
+      id?: string;
+      event?: string;
+      person?: string;
+      dateTimes?: number[];
+
+      active?: boolean;
+      isInEvent?: boolean;
+
+      scans?: ScanData[]
+
+      createdOn?: number;
+      createdBy?: string;
+      modifiedOn?: number;
+      modifiedBy?: string;
+      deleted?: boolean;
+    }
+
+    interface ScanData {
+      type?: string;
+      datetime?: number;
+      scanedBy?: string;
+    }
+  }
+
+
 
   export namespace Auth {
     interface LoginData {
