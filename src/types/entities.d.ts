@@ -69,6 +69,7 @@ declare module Entities {
       docs?: ParticipantFile[];
       description?: string;
       persons?: string[];
+      socialMedia?: SocialMedia[];
 
 
 
@@ -86,6 +87,12 @@ declare module Entities {
     }
 
     interface ParticipantFile {
+      name?: string;
+      description?: string;
+      uri?: string;
+    }
+
+    interface SocialMedia {
       name?: string;
       description?: string;
       uri?: string;

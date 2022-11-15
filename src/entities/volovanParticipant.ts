@@ -15,6 +15,7 @@ export class VolovanParticipant {
   docs: Entities.Participants.ParticipantFile[];
   tickets: string[];
   persons: string[];
+  socialMedia: Entities.Participants.SocialMedia[];
 
 
   createdOn: number;
@@ -32,6 +33,7 @@ export class VolovanParticipant {
     images,
     docs,
     persons,
+    socialMedia,
 
 
     createdOn = Date.now(),
@@ -58,6 +60,7 @@ export class VolovanParticipant {
     this.images = images;
     this.docs = docs;
     this.persons = persons;
+    this.socialMedia = socialMedia;
 
     this.createdOn = createdOn;
     this.createdBy = createdBy;
@@ -77,6 +80,7 @@ export class VolovanParticipant {
       docs: this.docs,
       tickets: this.tickets,
       persons: this.persons,
+      socialMedia: this.socialMedia,
 
       createdOn: this.createdOn,
       createdBy: this.createdBy,
