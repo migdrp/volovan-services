@@ -2,12 +2,13 @@
 
 import express from 'express';
 import { ExpressCallback } from '../utils';
-import { validateToken } from '../middlewares';
+import { validateRole, validateToken } from '../middlewares';
 import { DELETEUsers, POSTUsers, PATCHUsers } from '../controllers/users';
 
 const router = express.Router();
 
 router.use(validateToken);
+router.use(validateRole('Volovan Admin'));
 router.post(`/users`, ExpressCallback(POSTUsers, 'createUser'));
 router.post(`/users/find`, ExpressCallback(POSTUsers, 'findUser'));
 router.patch('/users', ExpressCallback(PATCHUsers, 'editUser'));

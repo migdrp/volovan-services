@@ -5,6 +5,7 @@ import participantsRouter from './participantsRouter';
 import personsRouter from './personsRouter';
 import eventsRouter from './eventsRouter';
 import ticketsRouter from './ticketsRouter';
+import eventsPublicRouter from './eventsPublicRouter';
 
 import { AuthTokens } from '../utils';
 
@@ -19,6 +20,7 @@ export {
   participantsRouter,
   personsRouter,
   eventsRouter,
-  ticketsRouter
+  ticketsRouter,
+  eventsPublicRouter
 
 }
