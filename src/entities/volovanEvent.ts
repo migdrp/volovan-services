@@ -82,7 +82,7 @@ export class VolovanEvent {
       participants: this.participants,
       tickets: this.tickets,
       images: this.images,
-      dosc: this.docs,
+      docs: this.docs,
       route: this.route,
       location: this.location,
       mainImage: this.mainImage,
