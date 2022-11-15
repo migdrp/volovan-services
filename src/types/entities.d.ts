@@ -105,6 +105,9 @@ declare module Entities {
 
       images?: EventImage[];
       docs?: EventFile[];
+      route?: string;
+      location?: string;
+      mainImage?: string,
 
       createdOn?: number;
       createdBy?: string;

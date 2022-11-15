@@ -12,9 +12,12 @@ export class VolovanEvent {
   description: string;
   dateTimes: number[];
   participants: string[];
-  tickets?: string[];
-  images?: Entities.Events.EventImage[];
-  docs?: Entities.Events.EventFile[];
+  tickets: string[];
+  images: Entities.Events.EventImage[];
+  docs: Entities.Events.EventFile[];
+  route: string;
+  location: string;
+  mainImage: string;
 
   createdOn: number;
   createdBy: string;
@@ -32,6 +35,9 @@ export class VolovanEvent {
     tickets,
     images = [],
     docs = [],
+    route,
+    location,
+    mainImage,
 
 
     createdOn = Date.now(),
@@ -46,6 +52,7 @@ export class VolovanEvent {
     if (!dateTimes || dateTimes.length === 0)
       throw new Error('At least one datetime for the event is required.')
 
+
     this.id = id;
     this.name = name;
     this.description = description;
@@ -54,6 +61,9 @@ export class VolovanEvent {
     this.tickets = tickets;
     this.images = images;
     this.docs = docs;
+    this.route = route;
+    this.location = location;
+    this.mainImage = mainImage;
 
     this.createdOn = createdOn;
     this.createdBy = createdBy;
@@ -73,6 +83,9 @@ export class VolovanEvent {
       tickets: this.tickets,
       images: this.images,
       dosc: this.docs,
+      route: this.route,
+      location: this.location,
+      mainImage: this.mainImage,
 
       createdOn: this.createdOn,
       createdBy: this.createdBy,
