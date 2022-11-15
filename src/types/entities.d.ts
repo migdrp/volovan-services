@@ -82,6 +82,7 @@ declare module Entities {
     interface ParticipantImage {
       name?: string;
       uri?: string;
+      backgorund?: string;
     }
 
     interface ParticipantFile {
