@@ -13,6 +13,8 @@ export class VolovanEvent {
   dateTimes: number[];
   participants: string[];
   tickets?: string[];
+  images?: Entities.Events.EventImage[];
+  docs?: Entities.Events.EventFile[];
 
   createdOn: number;
   createdBy: string;
@@ -28,6 +30,8 @@ export class VolovanEvent {
     dateTimes,
     participants,
     tickets,
+    images = [],
+    docs = [],
 
 
     createdOn = Date.now(),
@@ -48,6 +52,8 @@ export class VolovanEvent {
     this.dateTimes = dateTimes;
     this.participants = participants;
     this.tickets = tickets;
+    this.images = images;
+    this.docs = docs;
 
     this.createdOn = createdOn;
     this.createdBy = createdBy;
@@ -65,6 +71,8 @@ export class VolovanEvent {
       dateTimes: this.dateTimes,
       participants: this.participants,
       tickets: this.tickets,
+      images: this.images,
+      dosc: this.docs,
 
       createdOn: this.createdOn,
       createdBy: this.createdBy,

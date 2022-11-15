@@ -14,7 +14,7 @@ export class VolovanTicket {
 
   active: boolean;
   isInEvent: boolean;
-
+  secret: string;
   scans: Entities.Tickets.ScanData[]
 
   createdOn: number;
@@ -31,6 +31,7 @@ export class VolovanTicket {
     dateTimes,
     active = true,
     isInEvent = false,
+    secret = dep.Passwords.generateRandoString(),
     scans,
 
 
@@ -60,6 +61,7 @@ export class VolovanTicket {
     this.active = active;
     this.isInEvent = isInEvent;
     this.scans = scans;
+    this.secret = secret;
 
     this.createdOn = createdOn;
     this.createdBy = createdBy;
@@ -78,6 +80,7 @@ export class VolovanTicket {
       active: this.active,
       isInEvent: this.isInEvent,
       scans: this.scans,
+      secret: this.secret,
 
 
       createdOn: this.createdOn,

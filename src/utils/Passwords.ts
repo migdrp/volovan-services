@@ -1,6 +1,7 @@
 ///<reference path="../types/types.d.ts" />
 import bcrypt from "bcrypt";
 import passwordValidator from 'password-validator';
+import crypto from 'crypto';
 
 const schema = new passwordValidator();
 schema
@@ -34,10 +35,35 @@ const isValidPassword = (password: string) => {
   else return passwordValidated;
 }
 
+const generateRandoString = () => {
+  var token = crypto.randomBytes(64).toString('hex');
+  return token;
+}
+
+const generateKeys = () => {
+  const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+    modulusLength: 2048,
+    publicKeyEncoding: {
+      type: 'spki',
+      format: 'pem'
+    },
+    privateKeyEncoding: {
+      type: 'pkcs8',
+      format: 'pem'
+    }
+  });
+
+  return {
+    privateKey, publicKey
+  }
+}
+
 
 
 export const Passwords = {
   comparePassword,
   hashPassword,
-  isValidPassword
+  isValidPassword,
+  generateRandoString,
+  generateKeys
 }

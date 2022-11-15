@@ -104,12 +104,24 @@ declare module Entities {
       tickets?: string[];
 
 
+      images?: EventImage[];
+      docs?: EventFile[];
 
       createdOn?: number;
       createdBy?: string;
       modifiedOn?: number;
       modifiedBy?: string;
       deleted?: boolean;
+    }
+    interface EventImage {
+      name?: string;
+      uri?: string;
+    }
+
+    interface EventFile {
+      name?: string;
+      description?: string;
+      uri?: string;
     }
   }
 
@@ -126,6 +138,7 @@ declare module Entities {
       isInEvent?: boolean;
 
       scans?: ScanData[]
+      secret?: string
 
       createdOn?: number;
       createdBy?: string;
