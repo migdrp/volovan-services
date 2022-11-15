@@ -1,5 +1,5 @@
 import { Logger, Environment } from './utils';
-import { usersRouter, authRoutes, rolesRouter, eventsRouter, personsRouter, participantsRouter, ticketsRouter, eventsPublicRouter } from './routes';
+import { usersRouter, authRoutes, rolesRouter, eventsRouter, personsRouter, participantsRouter, ticketsRouter, publicRouter } from './routes';
 import { tokenPlacer, validateToken } from './middlewares';
 
 import cookieParser from 'cookie-parser';
@@ -30,13 +30,13 @@ async function main() {
       res.json({ message: "Welcome to Volovan Production API secure resource.  🙌" });
     });
 
+    app.use('/api', publicRouter);
     app.use('/api', usersRouter);
     app.use('/api', rolesRouter);
     app.use('/api', personsRouter);
     app.use('/api', participantsRouter);
     app.use('/api', eventsRouter);
     app.use('/api', ticketsRouter);
-    app.use('/api', eventsPublicRouter);
     app.use('/auth', authRoutes);
 
     app.listen(process.env.PORT);

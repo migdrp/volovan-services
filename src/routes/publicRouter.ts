@@ -3,13 +3,13 @@
 import express from 'express';
 import { ExpressCallback } from '../utils';
 import { validateToken, validateRole } from '../middlewares';
-import { DELETEEvents, POSTEvents, PATCHEvents } from '../controllers/events';
+import { POSTEvents } from '../controllers/events';
+import { POSTParticipants } from '../controllers/participants';
 
 const router = express.Router();
 
-router.use(validateToken);
-router.use(validateRole('Volovan Frontend'));
 router.post(`/public/events/find`, ExpressCallback(POSTEvents, 'findEvent'));
+router.post(`/public/participants/find`, ExpressCallback(POSTParticipants, 'findParticipant'));
 
 export default router;
 
