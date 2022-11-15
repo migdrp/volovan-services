@@ -68,7 +68,6 @@ declare module Entities {
       images?: ParticipantImage[];
       docs?: ParticipantFile[];
       description?: string;
-      tickets?: string[];
       persons?: string[];
 
 
@@ -132,6 +131,7 @@ declare module Entities {
       id?: string;
       event?: string;
       person?: string;
+      participant?: string;
       dateTimes?: number[];
 
       active?: boolean;

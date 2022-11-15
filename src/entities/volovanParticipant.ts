@@ -31,7 +31,6 @@ export class VolovanParticipant {
     type,
     images,
     docs,
-    tickets,
     persons,
 
 
@@ -58,7 +57,6 @@ export class VolovanParticipant {
     this.type = type;
     this.images = images;
     this.docs = docs;
-    this.tickets = tickets;
     this.persons = persons;
 
     this.createdOn = createdOn;

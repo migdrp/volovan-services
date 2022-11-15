@@ -16,6 +16,7 @@ export const createTicket = async (ticketData: Entities.Tickets.TicketData) => {
   if (personFound.length === 0)
     throw new Error('Person provided not found in the database.')
 
+
   const eventsFound = await dep.volovanDb.findByQuery({ id: newTicket.event, deleted: false }, 'events') as Entities.Events.EventData[];
   log.debug('Events found: ', eventsFound)
   if (eventsFound.length === 0)
@@ -31,6 +32,8 @@ export const createTicket = async (ticketData: Entities.Tickets.TicketData) => {
 
   if (!newTicket.dateTimes) newTicket.dateTimes = eventData.dateTimes;
   if (!newTicket.scans) newTicket.scans = [];
+
+
 
   await dep.volovanDb.updateOne({ id: eventData.id, ...eventData }, 'events');
 

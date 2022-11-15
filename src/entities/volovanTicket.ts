@@ -10,6 +10,7 @@ export class VolovanTicket {
   id: string;
   event: string;
   person: string;
+  participant: string;
   dateTimes: number[];
 
   active: boolean;
@@ -28,6 +29,7 @@ export class VolovanTicket {
     id = dep.Id.makeId(),
     event,
     person,
+    participant,
     dateTimes,
     active = true,
     isInEvent = false,
@@ -57,6 +59,7 @@ export class VolovanTicket {
     this.id = id;
     this.event = event;
     this.person = person;
+    this.participant = participant;
     this.dateTimes = dateTimes;
     this.active = active;
     this.isInEvent = isInEvent;
@@ -76,6 +79,7 @@ export class VolovanTicket {
       id: this.id,
       event: this.event,
       person: this.person,
+      participant: this.participant,
       dateTimes: this.dateTimes,
       active: this.active,
       isInEvent: this.isInEvent,
