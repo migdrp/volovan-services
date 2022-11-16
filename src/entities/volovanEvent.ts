@@ -12,12 +12,15 @@ export class VolovanEvent {
   description: string;
   dateTimes: number[];
   participants: string[];
+  participantsTimes: Entities.Events.ParticipantTime[];
   tickets: string[];
   images: Entities.Events.EventImage[];
   docs: Entities.Events.EventFile[];
   route: string;
   location: string;
   mainImage: string;
+  prices: Entities.Events.Price[];
+  socialMedia: Entities.Events.SocialMedia[];
 
   createdOn: number;
   createdBy: string;
@@ -32,12 +35,15 @@ export class VolovanEvent {
     description = 'Event without description.',
     dateTimes,
     participants,
+    participantsTimes,
     tickets,
     images = [],
     docs = [],
     route,
     location,
     mainImage,
+    prices,
+    socialMedia,
 
 
     createdOn = Date.now(),
@@ -58,12 +64,15 @@ export class VolovanEvent {
     this.description = description;
     this.dateTimes = dateTimes;
     this.participants = participants;
+    this.participantsTimes = participantsTimes;
     this.tickets = tickets;
     this.images = images;
     this.docs = docs;
     this.route = route;
     this.location = location;
     this.mainImage = mainImage;
+    this.prices = prices;
+    this.socialMedia = socialMedia;
 
     this.createdOn = createdOn;
     this.createdBy = createdBy;
@@ -80,12 +89,15 @@ export class VolovanEvent {
       description: this.description,
       dateTimes: this.dateTimes,
       participants: this.participants,
+      participantsTimes: this.participantsTimes,
       tickets: this.tickets,
       images: this.images,
       docs: this.docs,
       route: this.route,
       location: this.location,
       mainImage: this.mainImage,
+      prices: this.prices,
+      socialMedia: this.socialMedia,
 
       createdOn: this.createdOn,
       createdBy: this.createdBy,

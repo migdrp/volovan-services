@@ -108,6 +108,7 @@ declare module Entities {
       description?: string;
       dateTimes?: number[];
       participants?: string[];
+      participantsTimes?: ParticipantTime[];
       tickets?: string[];
 
 
@@ -116,6 +117,8 @@ declare module Entities {
       route?: string;
       location?: string;
       mainImage?: string,
+      prices?: Price[],
+      socialMedia?: SocialMedia[];
 
       createdOn?: number;
       createdBy?: string;
@@ -128,10 +131,29 @@ declare module Entities {
       uri?: string;
     }
 
+    interface SocialMedia {
+      name?: string;
+      description?: string;
+      uri?: string;
+    }
+
     interface EventFile {
       name?: string;
       description?: string;
       uri?: string;
+    }
+
+    interface ParticipantTime {
+      participant?: string;
+      time?: number;
+    }
+
+    interface Price {
+      name?: string,
+      description?: string,
+      conditions?: string,
+      ammount?: number,
+      currency?: string
     }
   }
 
