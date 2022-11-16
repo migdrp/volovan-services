@@ -107,6 +107,7 @@ declare module Entities {
       name?: string;
       description?: string;
       dateTimes?: number[];
+      unlockedDatetime?: number;
       participants?: string[];
       participantsTimes?: ParticipantTime[];
       tickets?: string[];

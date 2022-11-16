@@ -11,6 +11,7 @@ export class VolovanEvent {
   name: string;
   description: string;
   dateTimes: number[];
+  unlockedDatetime: number;
   participants: string[];
   participantsTimes: Entities.Events.ParticipantTime[];
   tickets: string[];
@@ -34,6 +35,7 @@ export class VolovanEvent {
     name,
     description = 'Event without description.',
     dateTimes,
+    unlockedDatetime,
     participants,
     participantsTimes,
     tickets,
@@ -63,6 +65,7 @@ export class VolovanEvent {
     this.name = name;
     this.description = description;
     this.dateTimes = dateTimes;
+    this.unlockedDatetime = unlockedDatetime;
     this.participants = participants;
     this.participantsTimes = participantsTimes;
     this.tickets = tickets;
@@ -88,6 +91,7 @@ export class VolovanEvent {
       name: this.name,
       description: this.description,
       dateTimes: this.dateTimes,
+      unlockedDatetime: this.unlockedDatetime,
       participants: this.participants,
       participantsTimes: this.participantsTimes,
       tickets: this.tickets,
