@@ -63,7 +63,8 @@ const getDate = (timestamp: number) => {
   const date = new Date(timestamp);
   const datestring = date.toLocaleString("MX", {
     timeZone: "America/Mexico_City",
-    dateStyle: "long"
+    dateStyle: "long",
+    timeStyle: "short",
   });
   //console.log(datestring);
   return datestring;
@@ -98,7 +99,7 @@ const htmlTicketTemplate = ({ eventDate, eventTime, fullName, orderId, dateTime,
     <div class="contacto-container"><span class="contacto-span">Evento:</span><span class="datos-span">${eventName}</span></div>
     <br />
     <h2>¡Gracias por tu compra!</h2>
-    <p>Te esperamos el ${eventDate} a las ${eventTime}, para cualquier duda o comentario contáctanos a traves del sitio oficial de Volovan Productions. Los accesos no son transferibles.</p>
+    <p>Te esperamos el ${eventDate}, para cualquier duda o comentario contáctanos a traves del sitio oficial de Volovan Productions. Los accesos no son transferibles.</p>
     <div class="qr-container">
       <img alt="qr" title="qr" style="display:block" width="200" height="200" src="${ticketUrl}" alt="QR">
     </div><br />
