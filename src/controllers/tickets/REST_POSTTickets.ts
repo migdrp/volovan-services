@@ -40,7 +40,7 @@ export const POSTTickets: Utils.RESTController = async (httpRequest, usecase) =>
           data.createdBy = httpRequest['userData']['id'];
 
         successMsg = 'Ticket successfully created.'
-        responseData = await createTicket(data);
+        responseData = await createTicket(data) as Entities.Tickets.TicketData[];
 
       }
     }
