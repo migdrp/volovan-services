@@ -22,21 +22,34 @@ export const createTicket = async (ticketData: Entities.Tickets.TicketData) => {
   if (eventsFound.length === 0)
     throw new Error('Event provided not found in the database.')
 
+
+
+
   const eventData = eventsFound[0]
-  if (!eventData.tickets) {
-    eventData.tickets = [];
-    eventData.tickets.push(newTicket.id)
+
+
+
+  const ticketForPersonExists = await dep.volovanDb.findByQuery({ person: newTicket.person, event: eventData.id, deleted: false }, 'tickets') as Entities.Tickets.TicketData[];
+
+  if (ticketForPersonExists.length > 0) {
+    return ticketForPersonExists[0];
   } else {
-    eventData.tickets.push(newTicket.id)
+
+
+    if (!eventData.tickets) {
+      eventData.tickets = [];
+      eventData.tickets.push(newTicket.id)
+    } else if (!eventData.tickets.includes(newTicket.id)) {
+      eventData.tickets.push(newTicket.id)
+    }
+
+    if (!newTicket.dateTimes) newTicket.dateTimes = eventData.dateTimes;
+    if (!newTicket.scans) newTicket.scans = [];
+
+
+
+    await dep.volovanDb.updateOne({ id: eventData.id, ...eventData }, 'events');
+
+    return await dep.volovanDb.insertOne(newTicket.getData(), 'tickets') as Entities.Tickets.TicketData[]
   }
-
-  if (!newTicket.dateTimes) newTicket.dateTimes = eventData.dateTimes;
-  if (!newTicket.scans) newTicket.scans = [];
-
-
-
-  await dep.volovanDb.updateOne({ id: eventData.id, ...eventData }, 'events');
-
-  return await dep.volovanDb.insertOne(newTicket.getData(), 'tickets') as Entities.Tickets.TicketData[]
-
 }

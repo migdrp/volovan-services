@@ -20,8 +20,8 @@ export const PATCHPersons: Utils.RESTController = async (httpRequest, usecase) =
 
         const data: Entities.Persons.PersonData = httpRequest.body;
 
-        if (httpRequest['personData']) {
-          data.modifiedBy = httpRequest['personData']['id'];
+        if (httpRequest['userData']) {
+          data.modifiedBy = httpRequest['userData']['id'];
           data.modifiedOn = Date.now();
         }
 

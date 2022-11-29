@@ -7,7 +7,9 @@ import { Passwords } from "./Passwords";
 import { Emails } from './Emails';
 import { ExpressCallback } from './ExpressCallback';
 import { AuthTokens } from "./AuthTokens";
-
+import { sendTicketsEmail } from "./MailerService";
+import { ImageManager } from './ImageManager';
+import { StripePayments } from "./StripePayments";
 
 
 export {
@@ -19,4 +21,7 @@ export {
   Emails,
   ExpressCallback,
   AuthTokens,
+  ImageManager,
+  sendTicketsEmail,
+  StripePayments
 }

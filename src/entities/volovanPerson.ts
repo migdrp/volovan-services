@@ -43,8 +43,6 @@ export class VolovanPerson {
       throw new Error('First names are required.')
     if (!lastNames)
       throw new Error('Last names are required.')
-    if (!email)
-      throw new Error('Email is required.')
 
 
     this.id = id;

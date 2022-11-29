@@ -15,4 +15,11 @@ declare module Utils {
 
   type RESTController = (httpRequest: import('express').Request, usecase?: string) => Promise<any>;
 
+  interface ApiResponse<T> {
+    statusCode: number;
+    status: string;
+    message: string;
+    data: T[];
+    count?: number;
+  }
 }

@@ -20,8 +20,8 @@ export const PATCHEvents: Utils.RESTController = async (httpRequest, usecase) =>
 
         const data: Entities.Events.EventData = httpRequest.body;
 
-        if (httpRequest['eventData']) {
-          data.modifiedBy = httpRequest['eventData']['id'];
+        if (httpRequest['userData']) {
+          data.modifiedBy = httpRequest['userData']['id'];
           data.modifiedOn = Date.now();
         }
 

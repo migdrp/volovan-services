@@ -1,5 +1,5 @@
 import { Logger, Environment } from './utils';
-import { usersRouter, authRoutes, rolesRouter, eventsRouter, personsRouter, participantsRouter, ticketsRouter, publicRouter } from './routes';
+import { usersRouter, authRoutes, rolesRouter, eventsRouter, personsRouter, participantsRouter, ticketsRouter, publicRouter, ordersRouter, paymentsRouter, emailServiceRouter } from './routes';
 import { tokenPlacer, validateToken } from './middlewares';
 
 import cookieParser from 'cookie-parser';
@@ -37,7 +37,10 @@ async function main() {
     app.use('/api', participantsRouter);
     app.use('/api', eventsRouter);
     app.use('/api', ticketsRouter);
+    app.use('/api', ordersRouter);
     app.use('/auth', authRoutes);
+    app.use('/payments', paymentsRouter)
+    app.use('/mailer', emailServiceRouter);
 
     app.listen(process.env.PORT);
     log.debug('Server is running on port: ', process.env.PORT);

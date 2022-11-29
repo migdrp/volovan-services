@@ -20,8 +20,8 @@ export const PATCHTickets: Utils.RESTController = async (httpRequest, usecase) =
 
         const data: Entities.Tickets.TicketData = httpRequest.body;
 
-        if (httpRequest['ticketData']) {
-          data.modifiedBy = httpRequest['ticketData']['id'];
+        if (httpRequest['userData']) {
+          data.modifiedBy = httpRequest['userData']['id'];
           data.modifiedOn = Date.now();
         }
 

@@ -7,10 +7,11 @@ export const createPerson = async (PersonData: Entities.Persons.PersonData) => {
 
 
   const newPerson = new VolovanPerson(PersonData);
-  const personFound = await dep.volovanDb.findByQuery({ firstNames: newPerson.firstNames, lastNames: newPerson.lastNames, email: newPerson.email, deleted: false }, 'persons');
+  const allPersons = await dep.volovanDb.findByQuery({ deleted: false }, 'persons') as Entities.Persons.PersonData[];
+  const personFound = allPersons.filter(person => ((dep.Names.compareSimilarity(person.firstNames, newPerson.firstNames) + dep.Names.compareSimilarity(person.lastNames, newPerson.lastNames)) / 2) > 0.9);
 
   if (personFound.length > 0)
-    throw new Error('A Person with the same name and email is already registered.')
+    throw new Error('A Person with the same name is already registered.')
 
 
   return await dep.volovanDb.insertOne(newPerson.getData(), 'persons') as Entities.Persons.PersonData[]

@@ -158,6 +158,41 @@ declare module Entities {
     }
   }
 
+
+  export namespace Orders {
+    type VolovanOrder = typeof import('../entities/volovanOrder').VolovanOrder
+
+    interface OrderData {
+      id?: string;
+      description?: string;
+      persons?: string[];
+      event?: string;
+      eventCode?: string;
+      customerFirstNames?: string;
+      customerLastNames?: string;
+      customerEmail?: string;
+      customerPhone?: string;
+      clientAmmount?: number;
+      serverAmmount?: number;
+      currency?: string;
+      status?: 'paid' | 'standby' | 'refund';
+      notes?: string[];
+      paymentOrder?: string;
+
+      emailReceived?: boolean;
+      lastEmailRequested?: number;
+
+
+
+
+
+
+      createdOn?: number;
+      modifiedOn?: number;
+      deleted?: boolean;
+    }
+  }
+
   export namespace Tickets {
     type VolovanTicket = typeof import('../entities/volovanTicket').VolovanTicket
 
@@ -165,7 +200,7 @@ declare module Entities {
       id?: string;
       event?: string;
       person?: string;
-      participant?: string;
+      code?: string;
       dateTimes?: number[];
 
       active?: boolean;
@@ -173,6 +208,8 @@ declare module Entities {
 
       scans?: ScanData[]
       secret?: string
+      url?: string
+      secure_url?: string
 
       createdOn?: number;
       createdBy?: string;
@@ -188,8 +225,6 @@ declare module Entities {
     }
   }
 
-
-
   export namespace Auth {
     interface LoginData {
       email?: string;
@@ -202,4 +237,6 @@ declare module Entities {
     }
 
   }
+
+
 }

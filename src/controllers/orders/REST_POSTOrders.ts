@@ -2,34 +2,31 @@
 
 
 import { Logger } from '../../utils';
-import { editeParticipant } from '../../use-cases/participants';
+import { findOrder } from '../../use-cases/orders';
 
-const log = new Logger('PATCH Participants Controller')
+const log = new Logger('POST Orders Controller')
 
-export const PATCHParticipants: Utils.RESTController = async (httpRequest, usecase) => {
+export const POSTOrders: Utils.RESTController = async (httpRequest, usecase) => {
   try {
     let successMsg = '';
     let responseData = [];
 
-    if (usecase === 'editParticipant') {
+
+    if (usecase === 'findOrder') {
       if (Array.isArray(httpRequest.body)) throw new Error('This enpoint do not support arrays yet...');
       else {
 
         if (!httpRequest.body)
           throw new Error('The request body can not be empty.');
 
-        const data: Entities.Participants.ParticipantData = httpRequest.body;
+        const data: Entities.Orders.OrderData = httpRequest.body;
 
-        if (httpRequest['userData']) {
-          data.modifiedBy = httpRequest['userData']['id'];
-          data.modifiedOn = Date.now();
-        }
-
-        successMsg = 'Participant successfully modified.'
-        responseData = await editeParticipant(data);
+        successMsg = 'Orders found.'
+        responseData = await findOrder(data);
 
       }
     }
+
     return {
       headers: { 'Content-Type': 'application/json' },
       statusCode: 201,

@@ -1,4 +1,4 @@
-import { Id, Names, Emails, Passwords } from '../utils';
+import { Id, Names, Emails, Passwords, ImageManager } from '../utils';
 
 
 import { VolovanRole } from './volovanRole';
@@ -7,13 +7,14 @@ import { VolovanEvent } from './volovanEvent';
 import { VolovanParticipant } from './volovanParticipant';
 import { VolovanTicket } from './volovanTicket';
 import { VolovanPerson } from './volovanPerson';
-
+import { VolovanOrder } from './volovanOrder';
 
 export const dep = {
   Id,
   Names,
   Emails,
-  Passwords
+  Passwords,
+  ImageManager
 }
 
 
@@ -23,5 +24,6 @@ export {
   VolovanEvent,
   VolovanParticipant,
   VolovanTicket,
-  VolovanPerson
+  VolovanPerson,
+  VolovanOrder
 }

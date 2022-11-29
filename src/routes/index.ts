@@ -6,6 +6,9 @@ import personsRouter from './personsRouter';
 import eventsRouter from './eventsRouter';
 import ticketsRouter from './ticketsRouter';
 import publicRouter from './publicRouter';
+import ordersRouter from './ordersRouter';
+import paymentsRouter from './paymentsRouter';
+import emailServiceRouter from './emailServiceRouter'
 
 import { AuthTokens } from '../utils';
 
@@ -21,6 +24,9 @@ export {
   personsRouter,
   eventsRouter,
   ticketsRouter,
-  publicRouter
+  publicRouter,
+  ordersRouter,
+  paymentsRouter,
+  emailServiceRouter
 
 }

@@ -10,13 +10,15 @@ export class VolovanTicket {
   id: string;
   event: string;
   person: string;
-  participant: string;
+  code: string;
   dateTimes: number[];
 
   active: boolean;
   isInEvent: boolean;
   secret: string;
   scans: Entities.Tickets.ScanData[]
+  url: string;
+  secure_url: string;
 
   createdOn: number;
   createdBy: string;
@@ -29,12 +31,14 @@ export class VolovanTicket {
     id = dep.Id.makeId(),
     event,
     person,
-    participant,
+    code,
     dateTimes,
     active = true,
     isInEvent = false,
     secret = dep.Passwords.generateRandoString(),
     scans,
+    url,
+    secure_url,
 
 
 
@@ -59,12 +63,14 @@ export class VolovanTicket {
     this.id = id;
     this.event = event;
     this.person = person;
-    this.participant = participant;
+    this.code = code;
     this.dateTimes = dateTimes;
     this.active = active;
     this.isInEvent = isInEvent;
     this.scans = scans;
     this.secret = secret;
+    this.url = url;
+    this.secure_url = secure_url;
 
     this.createdOn = createdOn;
     this.createdBy = createdBy;
@@ -79,13 +85,15 @@ export class VolovanTicket {
       id: this.id,
       event: this.event,
       person: this.person,
-      participant: this.participant,
+      code: this.code,
       dateTimes: this.dateTimes,
       active: this.active,
       isInEvent: this.isInEvent,
       scans: this.scans,
       secret: this.secret,
+      url: this.url,
 
+      secure_url: this.secure_url,
 
       createdOn: this.createdOn,
       createdBy: this.createdBy,

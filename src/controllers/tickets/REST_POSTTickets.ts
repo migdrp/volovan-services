@@ -25,7 +25,7 @@ export const POSTTickets: Utils.RESTController = async (httpRequest, usecase) =>
           if (httpRequest['userData'])
             data[i].createdBy = httpRequest['userData']['id'];
 
-        successMsg = 'Ticket successfully created.'
+        successMsg = 'Tickets successfully created.'
         responseData = await createManyTickets(data);
         //log.debug('responseData', responseData)
 
