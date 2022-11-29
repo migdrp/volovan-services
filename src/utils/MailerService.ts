@@ -50,6 +50,7 @@ const getDateTime = (timestamp: number) => {
   if (typeof timestamp !== "number") timestamp = parseInt(timestamp);
   const date = new Date(timestamp);
   const datestring = date.toLocaleString("MX", {
+    timeZone: "America/Mexico_City",
     dateStyle: "medium",
     timeStyle: "medium"
   });
@@ -61,6 +62,7 @@ const getDate = (timestamp: number) => {
   if (typeof timestamp !== "number") timestamp = parseInt(timestamp);
   const date = new Date(timestamp);
   const datestring = date.toLocaleString("MX", {
+    timeZone: "America/Mexico_City",
     dateStyle: "long"
   });
   //console.log(datestring);
@@ -71,6 +73,7 @@ const getTime = (timestamp: number) => {
   if (typeof timestamp !== "number") timestamp = parseInt(timestamp);
   const date = new Date(timestamp);
   const datestring = date.toLocaleString("MX", {
+    timeZone: "America/Mexico_City",
     timeStyle: "medium"
   });
   //console.log(datestring);
