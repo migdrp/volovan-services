@@ -33,6 +33,14 @@ router.post('/manual', async (req, res) => {
     return
   }
 
+  if (orderFound[0].status !== 'paid') {
+    res.json({
+      status: 'error',
+      message: 'Order has no payment assigned.'
+    });
+    return
+  }
+
   const eventFound = await volovanDb.findByQuery({ id: orderFound[0].event, deleted: false }, 'events') as Entities.Events.EventData[];
   if (eventFound.length === 0) {
     res.json({
