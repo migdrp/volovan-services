@@ -50,4 +50,18 @@ export class StripePayments {
   }
 
 
+
+  static findPaymentIntent = async (id: string) => {
+    const stripe = StripePayments.getStripeLibrary();
+    const paymentIntent = await stripe.paymentIntents.retrieve(id);
+    return paymentIntent;
+  }
+
+
+  static findPaymentIntentByStatus = async (id: string, status: string) => {
+    const stripe = StripePayments.getStripeLibrary();
+    const paymentIntent = await stripe.paymentIntents.search({ query: `id:\'${id}\' AND status:\'${status}\'` });
+    return paymentIntent;
+  }
+
 }

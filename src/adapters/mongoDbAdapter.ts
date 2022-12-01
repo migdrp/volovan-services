@@ -173,7 +173,12 @@ export class mongoDbAdapter {
       const result = await db.collection(collection).updateOne({ _id: _id }, { $set: { ...data } }, { upsert: true });
 
       await mogngoDb.closeDb();
-      return result.modifiedCount > 0 ? [{ id: _id, ...data }] as any[] : [];
+      let response = result.modifiedCount > 0 ? [{ id: _id, ...data }] as any[] : [];
+
+      if (response.length === 0)
+        response = await this.findById({ id: _id }, collection)
+
+      return response;
     } catch (error) {
       throw new Error(`Error updating ${_id} on ${collection} collection: ${error}`);
     }

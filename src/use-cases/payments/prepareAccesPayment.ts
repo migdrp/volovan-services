@@ -26,10 +26,10 @@ export const prepareAccesPayment = async (data: Payments.StripePreparePaymentDat
     throw Error('El evento ingresado para la compra no existe.');
 
   const persons = await createManyPersons(data.personsData);
-  log.debug('Persons created: ', persons);
+  log.debug('Persons created: ', persons.length);
 
   data.volovanOrderData.persons = persons.map(person => person.id);
-  log.debug('Persons for order: ', data.volovanOrderData.persons);
+  log.debug('Persons for order: ', data.volovanOrderData.persons.length);
 
   const newOrder = await createOrder(data.volovanOrderData);
   log.debug('Order Created: ', newOrder[0]);
@@ -55,26 +55,56 @@ export const prepareAccesPayment = async (data: Payments.StripePreparePaymentDat
     });
   }
 
+  let intent = null;
+  if (createdOrder.paymentOrder) {
+    intent = await StripePayments.findPaymentIntent(createdOrder.paymentOrder);
+    if (intent.status === 'requires_payment_method' && intent.amount === (createdOrder.serverAmmount * 100)) {
+      return { paymentIntent: intent, createdOrder: createdOrder } as Payments.StripePreparePaymentResponse;
+    } else {
 
+      intent = await StripePayments.createPaymentIntent({
+        amount: createdOrder.serverAmmount * 100,
+        currency: createdOrder.currency,
+        payment_method_types: ['card'],
+        customer: stripeCustomer.id,
+      });
+      createdOrder.paymentOrder = intent.id
+      const lastModToOrder = await dep.volovanDb.updateOne({ id: createdOrder.id, ...createdOrder }, 'orders') as Entities.Orders.OrderData[];
 
-  let intent = await StripePayments.createPaymentIntent({
-    amount: createdOrder.serverAmmount * 100,
-    currency: createdOrder.currency,
-    payment_method_types: ['card'],
-    customer: stripeCustomer.id,
-  });
+      if (lastModToOrder.length === 0) {
+        intent = await StripePayments.cancelPaymentIntent(intent.id);
+        throw new Error('Algo salió mal al crear la orden de compra. Cancelando requerimiento de pago.')
+      }
 
-  createdOrder.paymentOrder = intent.id
+      log.debug('The las modifiation to order before step3 (step3 = coplete access payements). ', lastModToOrder[0])
 
+      return { paymentIntent: intent, createdOrder: lastModToOrder[0] } as Payments.StripePreparePaymentResponse;
+    }
 
-  const lastModToOrder = await dep.volovanDb.updateOne({ id: createdOrder.id, ...createdOrder }, 'orders') as Entities.Orders.OrderData[];
+  } else {
 
-  if (lastModToOrder.length === 0) {
-    intent = await StripePayments.cancelPaymentIntent(intent.id);
-    throw new Error('Algo salió mal al crear la orden de compra. Cancelando requerimiento de pago.')
+    intent = await StripePayments.createPaymentIntent({
+      amount: createdOrder.serverAmmount * 100,
+      currency: createdOrder.currency,
+      payment_method_types: ['card'],
+      customer: stripeCustomer.id,
+    });
+    createdOrder.paymentOrder = intent.id
+    const lastModToOrder = await dep.volovanDb.updateOne({ id: createdOrder.id, ...createdOrder }, 'orders') as Entities.Orders.OrderData[];
+
+    if (lastModToOrder.length === 0) {
+      intent = await StripePayments.cancelPaymentIntent(intent.id);
+      throw new Error('Algo salió mal al crear la orden de compra. Cancelando requerimiento de pago.')
+    }
+
+    log.debug('The las modifiation to order before step3 (step3 = coplete access payements). ', lastModToOrder[0])
+
+    return { paymentIntent: intent, createdOrder: lastModToOrder[0] } as Payments.StripePreparePaymentResponse;
   }
 
-  log.debug('The las modifiation to order before step3 (step3 = coplete access payements). ', lastModToOrder[0])
 
-  return { paymentIntent: intent, createdOrder: lastModToOrder[0] } as Payments.StripePreparePaymentResponse;
+
+
+
+
 }

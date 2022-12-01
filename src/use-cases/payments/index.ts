@@ -3,6 +3,7 @@ import { sendTicketsEmail, StripePayments } from '../../utils';
 import { prepareAccesPayment } from './prepareAccesPayment';
 import { cancelPaymentIntent } from './cancelPaymentIntent';
 import { completeAccessPayment } from './completeAccessPayment';
+import { searchPaymentIntent } from './searchPaymentIntent';
 
 
 export const dep = {
@@ -16,5 +17,5 @@ export const dep = {
 export {
   prepareAccesPayment,
   cancelPaymentIntent,
-  completeAccessPayment
+  completeAccessPayment, searchPaymentIntent
 }

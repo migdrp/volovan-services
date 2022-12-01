@@ -2,11 +2,9 @@
 
 
 import { UploadApiResponse, UploadStream, v2 as cloudinary } from 'cloudinary';
-import { PassThrough } from 'stream';
 import { createReadStream } from 'streamifier';
 import { Logger } from '.';
 import QRCode from 'qrcode'
-import fs from 'fs';
 
 
 const log = new Logger('Image Manager Util');
@@ -33,9 +31,10 @@ export class ImageManager {
       const cloudinary = ImageManager.getImageCloud();
 
       const qr = await ImageManager.generateQR(ticketId);
-
+      const folder = `Volovan Productions/Tickets/${process.env.NODE_ENV === 'production' ? eventName : `dev/${eventName}`}`;
+      log.debug('Images saving in folder : ', folder)
       const uploadStream = cloudinary.uploader.upload_stream({
-        folder: `Volovan Productions/Tickets/${eventName}`
+        folder: `Volovan Productions/Tickets/${process.env.NODE_ENV === 'production' ? eventName : `dev/${eventName}`}`
       }, (error, result) => {
         if (error) {
           reject(new Error(error.message));

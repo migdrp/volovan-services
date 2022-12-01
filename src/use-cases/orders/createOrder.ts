@@ -11,126 +11,91 @@ const log = new Logger('Create Order Use Case');
  * @description  Crea un objeto de volovan Order relacionado con una orden de compra del provedor de identidad, un evento, tickets y personas.
  *    1 - Persons previamente creadas
  *    2 - Revisa si existe el evento
- *    3 - Revisa si el customer ya tiene una orden de compra pagada a su email y nombre.
- *    4 - Revisa si ya existe una orden que conetnga alguna de las personas ingresadas.
+ *    3 - Revisa si alguna persona ingresada ya está en los datos de una orden de compra pagada.
+ *    4 - Revisa si el comprador ya tiene alguna orden de compra en standBy
  *    
  */
 export const createOrder = async (OrderData: Entities.Orders.OrderData) => {
 
 
   const newOrder = new VolovanOrder(OrderData);
-  let existingOrdersToDelete: Entities.Orders.OrderData[] = [];
 
-  log.debug('Persons found: ', newOrder.persons);
+  log.debug('New Order Persons found: ', newOrder.persons.length);
 
+  /* __________________________________________________________________________________________________________________________
+          1  Revisa si los ids de personas existen (Las personsas ya deben estar previamente creadas) 
+  */
   const personsExist = await dep.volovanDb.findByQuery({ id: { $in: newOrder.persons }, deleted: false }, 'persons');
-
-  log.debug('Persons found: ', personsExist);
-
   if (personsExist.length !== newOrder.persons.length)
     throw new Error('Algunos identificadores de las personas ingresadas en la orden de compra no se encontraron en el sistema.');
+  /* ______________________________________________________________________________________________________________________________ */
 
+
+
+  /* __________________________________________________________________________________________________________________________
+          2  Revisa si el evento existe en el sistema
+  */
   const eventsFound = await dep.volovanDb.findByQuery({ id: newOrder.event, deleted: false }, 'events') as Entities.Events.EventData[];
-  log.debug('Events found: ', eventsFound);
-
+  log.debug('New Order Events found: ', eventsFound.length);
   if (eventsFound.length === 0)
     throw new Error('El identificador del evento ingresado no existe en la base de datos.');
+  /* ______________________________________________________________________________________________________________________________ */
 
-  // Revisa si existe una orden de compra del mismo customer con aguna de las personas ingresadas.
-  const sameCustomerOrderWithPersonsFound = await dep.volovanDb.findByQuery({ persons: { $all: newOrder.persons }, event: newOrder.event, deleted: false, customerEmail: newOrder.customerEmail }, 'orders') as Entities.Orders.OrderData[];
 
-  if (sameCustomerOrderWithPersonsFound.length === 0) { // No se encontraron ordenes de compra de el "customer" ingresado.
 
-    const orderWithPersonsFound = await dep.volovanDb.findByQuery({ persons: { $all: newOrder.persons }, event: newOrder.event, deleted: false }, 'orders') as Entities.Orders.OrderData[];
-
-    if (orderWithPersonsFound.length === 1) {
-      if (orderWithPersonsFound[0].status === 'paid') { // --------------------------    (RETURNS)
-        log.debug('Paid order with some persons found:');
-        const personsInOrder = await dep.volovanDb.findManyWithIdsAray(orderWithPersonsFound[0].persons, 'persons') as Entities.Persons.PersonData[];
-        const personsInOrderFiltered = personsInOrder.filter(person => newOrder.persons.includes(person.id));
-        const personsNames = personsInOrderFiltered.map(person => `${person.firstNames} ${person.lastNames}`);
-        throw new Error(`${personsNames.join(', ')} ${personsNames.length > 1 ? 'ya han sido registrados en una orden de compra de accesos para el mismo evento.' : 'ya ha sido registrado en una orden de compra de accesos para el mismo evento.'}`);
-
-      }
-
-      if (orderWithPersonsFound[0].status === 'standby') {  // --------------------------    (RSUMES)
-
-        let existingOrder = orderWithPersonsFound[0];
-        existingOrdersToDelete.push(existingOrder);
-
+  /* __________________________________________________________________________________________________________________________
+          3  Revisa si alguna persona ingresada ya se encuentra en una orden de compra pagada para el mismo evento.
+   */
+  const orderPaidWithSamePersons = await dep.volovanDb.findByQuery({ persons: { $all: newOrder.persons }, event: newOrder.event, deleted: false, status: 'paid' }, 'orders') as Entities.Orders.OrderData[];
+  log.debug('Orders Paid With Same Persons: ', orderPaidWithSamePersons.length);
+  if (orderPaidWithSamePersons.length > 0) {
+    const allPersonsInOrders = [];
+    for (let x = 0; x < orderPaidWithSamePersons.length; x++) {
+      for (let y = 0; y < orderPaidWithSamePersons[x].persons.length; y++) {
+        if (!allPersonsInOrders.includes(orderPaidWithSamePersons[x].persons[y]))
+          allPersonsInOrders.push(orderPaidWithSamePersons[x].persons[y]);
       }
     }
 
-    if (orderWithPersonsFound.length > 1) { // --------------------------  Esto no deberia suceder en teoria...  (RETURNS)
-      log.error('ESTO NO DEBERIA SUCEDER... SE ENCONTRARON ORDENES DE COMPRA CON LAS MISMAS PERSONAS INCLUIDAS, si ninguna está pagada no pasa nada...')
-      for (let i = 0; i < orderWithPersonsFound.length; i++) {
-        if (orderWithPersonsFound[i].status === 'paid') {  // Se encontro una orden pagada con personas similares -------- (RETURNS)
-          log.debug('Paid order with some persons found:');
-          const personsInOrder = await dep.volovanDb.findManyWithIdsAray(orderWithPersonsFound[i].persons, 'persons') as Entities.Persons.PersonData[];
-          const personsInOrderFiltered = personsInOrder.filter(person => newOrder.persons.includes(person.id));
-          const personsNames = personsInOrderFiltered.map(person => `${person.firstNames} ${person.lastNames}`);
-          throw new Error(`${personsNames.join(', ')} ${personsNames.length > 1 ? 'ya han sido registrados en una orden de compra de accesos para el mismo evento.' : 'ya ha sido registrado en una orden de compra de accesos para el mismo evento.'}`);
-        }
-      }
-    }
-
-  } else {   //Ya existe una orden de compra del mismo "customer" ingresado para una o mas personas de las ya ingresadas.
-
-    if (sameCustomerOrderWithPersonsFound.length === 1) { // Existe solo una orden de compra al mismo "customer".
-
-      const existingOrder = sameCustomerOrderWithPersonsFound[0];
-
-      if (existingOrder.status === 'standby') { // La orden está en stanbdBy, resumiendo opraciones...     (RESUMES)
-
-        existingOrdersToDelete.push(existingOrder);
-
-      }
-
-      if (existingOrder.status === 'paid') { // La orden ingresada ya etsaba pagada, imprimiendo personsas que estaban incluidas. (RETURNS)
-
-
-        log.debug('Paid order with some persons found:');
-        const personsInOrder = await dep.volovanDb.findManyWithIdsAray(existingOrder.persons, 'persons') as Entities.Persons.PersonData[];
-        const personsInOrderFiltered = personsInOrder.filter(person => newOrder.persons.includes(person.id));
-        const personsNames = personsInOrderFiltered.map(person => `${person.firstNames} ${person.lastNames}`);
-        throw new Error(`${personsNames.join(', ')} ${personsNames.length > 1 ? 'ya han sido registrados en una orden de compra de accesos del evento seleccionado.' : 'ya ha sido registrado en una orden de compra de accesos para el mismo evento.'}`);
-
-      }
-
-    } else if (sameCustomerOrderWithPersonsFound.length > 1) {
-
-      log.error('ESTO NO DEBERIA SUCEDER... SE ENCONTRARON ORDENES DE COMPRA CON LAS MISMAS PERSONAS INCLUIDAS PARA EL MISMO CUSTOMER, si ninguna está pagada elimina las existentes y resume con la nueva información, si alguna ya está pagada marca error...')
-      for (let i = 0; i < sameCustomerOrderWithPersonsFound.length; i++) {
-        for (let i = 0; i < sameCustomerOrderWithPersonsFound.length; i++) {
-          if (sameCustomerOrderWithPersonsFound[i].status === 'paid') {  // Se encontro una orden pagada con personas similares -------- (RETURNS)
-            log.debug('Paid order with some persons found:');
-            const personsInOrder = await dep.volovanDb.findManyWithIdsAray(sameCustomerOrderWithPersonsFound[i].persons, 'persons') as Entities.Persons.PersonData[];
-            const personsInOrderFiltered = personsInOrder.filter(person => newOrder.persons.includes(person.id));
-            const personsNames = personsInOrderFiltered.map(person => `${person.firstNames} ${person.lastNames}`);
-            throw new Error(`${personsNames.join(', ')} ${personsNames.length > 1 ? 'ya han sido registrados en una orden de compra de accesos para el mismo evento.' : 'ya ha sido registrado en una orden de compra de accesos para el mismo evento.'}`);
-          }
-          if (sameCustomerOrderWithPersonsFound[i].status === 'standby') {  // Se encontraron ordenes de compra en standby para el mismo customer, eliminando ordenes en standby -------- (RESUMES)
-            existingOrdersToDelete.push(sameCustomerOrderWithPersonsFound[i])
-          }
-        }
-      }
-
-    }
+    const personsInOrder = await dep.volovanDb.findManyWithIdsAray(allPersonsInOrders, 'persons') as Entities.Persons.PersonData[];
+    const personsInOrderFiltered = personsInOrder.filter(person => newOrder.persons.includes(person.id));
+    const personsNames = personsInOrderFiltered.map(person => `${person.firstNames} ${person.lastNames}`);
+    throw new Error(`${personsNames.join(', ')} ${personsNames.length > 1 ? 'ya han sido registrados en una orden de compra de accesos del evento seleccionado.' : 'ya ha sido registrado en una orden de compra de accesos para el mismo evento.'}`);
   }
 
 
+  /* ______________________________________________________________________________________________________________________________ */
+
+
+
+  /* __________________________________________________________________________________________________________________________
+          4  Revisa si el comprador tiene alguna orden de compra en standBy
+   */
+  const customerOrderFound = await dep.volovanDb.findByQuery({ customerEmail: newOrder.customerEmail, event: newOrder.event, deleted: false, status: 'standby' }, 'orders') as Entities.Orders.OrderData[];
+  log.debug('Customer order found in standby: ', customerOrderFound.length);
+
+  let selectedOrder: Entities.Orders.OrderData = null;
+  let existingOrdersToDelete: Entities.Orders.OrderData[] = [];
+
+  if (customerOrderFound.length === 1)
+    selectedOrder = customerOrderFound[0];
+  if (customerOrderFound.length > 1) {
+    for (let x = 0; x < customerOrderFound.length; x++) {
+      if (x > 0)
+        existingOrdersToDelete.push(customerOrderFound[x])
+    }
+    selectedOrder = customerOrderFound[0];
+  }
+
   if (existingOrdersToDelete.length > 0) {
-    const changes = existingOrdersToDelete.map(order => {
-      order.deleted = true;
-      return order;
-    })
+    const changes = existingOrdersToDelete.map(order => { order.deleted = true; return order; });
     await dep.volovanDb.updateMany(changes, 'orders');
   }
 
-  //calcula el precio de la orden de compra del lado del servidor..
+  /**
+   * Calcula el precio de la orden de compra del lado del servidor..
+   */
   const eventData = eventsFound[0];
-
-
   if (eventData.prices.length === 0)
     throw new Error('El evento seleccionado para la compra de accesos aún no tiene sus precios de acceso establecidos...');
 
@@ -156,9 +121,30 @@ export const createOrder = async (OrderData: Entities.Orders.OrderData) => {
 
   newOrder.serverAmmount = totalPrice.ammount;
   newOrder.currency = totalPrice.currency;
+
   if (newOrder.notes)
-    newOrder.notes.push('Orden creada desde los servicios de Volovan Productions. ')
+    newOrder.notes.push('Orden creada desde los servicios de Volovan Productions. ');
 
-  return await dep.volovanDb.insertOne(newOrder.getData(), 'orders') as Entities.Orders.OrderData[]
+  if (selectedOrder) {
 
+
+    selectedOrder.persons = newOrder.persons;
+    selectedOrder.serverAmmount = newOrder.serverAmmount;
+    selectedOrder.currency = newOrder.currency;
+    selectedOrder.clientAmmount = newOrder.clientAmmount
+    selectedOrder.customerFirstNames = newOrder.customerFirstNames;
+    selectedOrder.customerLastNames = newOrder.customerLastNames;
+    selectedOrder.eventCode = newOrder.eventCode;
+    selectedOrder.description = newOrder.description;
+    selectedOrder.notes.push('Orden creada con anterioridad, continuando con el proceso de pago.')
+    log.debug('Customer standby selected order data to modify.. ', selectedOrder);
+    const response = await dep.volovanDb.updateOne({ id: selectedOrder.id, ...selectedOrder }, 'orders') as Entities.Orders.OrderData[]
+    log.debug('Customer standby selected order to resume process.. ', response);
+    return response;
+  } else {
+
+    const response = await dep.volovanDb.insertOne(newOrder.getData(), 'orders') as Entities.Orders.OrderData[]
+    log.debug('Customer brand new order... ', response);
+    return response;
+  }
 }
