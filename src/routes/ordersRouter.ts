@@ -10,7 +10,7 @@ const router = express.Router();
 router.use(validateToken);
 router.use(validateRole('Volovan Admin'));
 router.post(`/orders/find`, ExpressCallback(POSTOrders, 'findOrder'));
-router.post(`/orders`, ExpressCallback(PATCHOrders, 'editOrder'));
+router.patch(`/orders`, ExpressCallback(PATCHOrders, 'editOrder'));
 
 export default router;
 
