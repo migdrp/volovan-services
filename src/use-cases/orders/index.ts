@@ -1,6 +1,7 @@
 import { volovanDb } from '../../adapters';
 import { findOrder } from './findOrder';
 import { createOrder } from './createOrder';
+import { editeOrder } from './editOrder';
 
 
 
@@ -11,5 +12,6 @@ export const dep = {
 
 export {
   findOrder,
-  createOrder
+  createOrder,
+  editeOrder
 }

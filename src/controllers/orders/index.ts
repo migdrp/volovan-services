@@ -1,6 +1,7 @@
 import { Logger } from '../../utils';
 
 import { POSTOrders } from './REST_POSTOrders';
+import { PATCHOrders } from './REST_PATCHOrders';
 
 export const dep = {
   Logger
@@ -9,7 +10,8 @@ export const dep = {
 
 
 export {
-  POSTOrders
+  POSTOrders,
+  PATCHOrders
 }
 
 

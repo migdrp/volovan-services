@@ -3,13 +3,14 @@
 import express from 'express';
 import { ExpressCallback } from '../utils';
 import { validateRole, validateToken } from '../middlewares';
-import { POSTOrders } from '../controllers/orders';
+import { POSTOrders, PATCHOrders } from '../controllers/orders';
 
 const router = express.Router();
 
 router.use(validateToken);
 router.use(validateRole('Volovan Admin'));
 router.post(`/orders/find`, ExpressCallback(POSTOrders, 'findOrder'));
+router.post(`/orders`, ExpressCallback(PATCHOrders, 'editOrder'));
 
 export default router;
 
