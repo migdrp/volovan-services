@@ -24,8 +24,8 @@ router.post(`/login`, async (req: Request, res: Response, next: NextFunction) =>
     req.body.accessToken = accessToken;
     req.body.refreshToken = refreshToken;
 
-    res.cookie("accessToken", accessToken, { httpOnly: true, maxAge: parseInt(process.env.JWT_ACCESS_TIME) * 1000, sameSite: 'none', secure: true });
-    res.cookie("refreshToken", refreshToken, { httpOnly: true, maxAge: parseInt(process.env.JWT_REFRESH_TIME) * 1000, sameSite: 'none', secure: true });
+    res.cookie("accessToken", accessToken, { httpOnly: true, maxAge: parseInt(process.env.JWT_ACCESS_TIME) * 1000, sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', secure: process.env.NODE_ENV === 'production' });
+    res.cookie("refreshToken", refreshToken, { httpOnly: true, maxAge: parseInt(process.env.JWT_REFRESH_TIME) * 1000, sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', secure: process.env.NODE_ENV === 'production' });
 
     req.headers.authorization = `Bearer ${accessToken}`;
     res.json({
