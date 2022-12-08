@@ -2,6 +2,7 @@
 
 
 import express, { NextFunction, Response, Request } from 'express';
+import { validateToken } from '../middlewares';
 import { verifyUserData, saveUserToken, refreshUserToken, destroyUserToken } from '../use-cases/auth';
 import { Logger } from '../utils/Logger';
 
@@ -119,6 +120,30 @@ router.get('/logout', async (req: Request, res: Response, next: NextFunction) =>
     res.json({ status: 'error', message: err.message });
   }
 
+});
+
+
+router.get('/session', validateToken, (req, res) => {
+  res.json({
+    status: 'success',
+    message: 'User session info.',
+    data: [
+      req['userData']
+    ]
+
+  });
+});
+
+
+router.get('/isalive', validateToken, (req, res) => {
+  res.json({
+    status: 'success',
+    message: 'User session found.',
+    data: [
+      req['userData']
+    ]
+
+  });
 });
 
 

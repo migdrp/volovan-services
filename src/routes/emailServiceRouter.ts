@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import { Logger, sendTicketsEmail } from '../utils';
 import { volovanDb } from '../adapters';
+import { validateRole } from '../middlewares';
 
 const log = new Logger('Email Service Router');
 
@@ -11,7 +12,7 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
 
-router.post('/manual', async (req, res) => {
+router.post('/manual', validateRole(['Volovan Admin']), async (req, res) => {
   log.debug('Email Service Online');
 
   if (!req.body || !req.body.orderId) {

@@ -7,7 +7,7 @@ import { findRole } from '../use-cases/roles'
 
 const log = new Logger('Validate role middleware');
 
-export function validateRole(role: string) {
+export function validateRole(role: string[]) {
 
   return async (req: Request, res: Response, next: NextFunction) => {
 
@@ -24,7 +24,7 @@ export function validateRole(role: string) {
       const userRoles = allRoles.filter(role => userRolesIds.includes(role.id));
       const userRolesNames = userRoles.map(role => role.name);
 
-      if (!userRolesNames.includes(role))
+      if (!role.some(role => userRolesNames.includes(role)))
         throw new Error('Not authorized')
 
       next();

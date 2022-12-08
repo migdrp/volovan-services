@@ -8,11 +8,10 @@ import { DELETETickets, POSTTickets, PATCHTickets } from '../controllers/tickets
 const router = express.Router();
 
 router.use(validateToken);
-router.use(validateRole('Volovan Admin'));
-router.post(`/tickets`, ExpressCallback(POSTTickets, 'createTicket'));
-router.post(`/tickets/find`, ExpressCallback(POSTTickets, 'findTicket'));
-router.delete(`/tickets`, ExpressCallback(DELETETickets, 'deleteTicket'));
-router.patch(`/tickets`, ExpressCallback(PATCHTickets, 'editTicket'));
+router.post(`/tickets`, validateRole(['Volovan Admin']), ExpressCallback(POSTTickets, 'createTicket'));
+router.post(`/tickets/find`, validateRole(['Volovan Admin', 'Scan Code']), ExpressCallback(POSTTickets, 'findTicket'));
+router.delete(`/tickets`, validateRole(['Volovan Admin']), ExpressCallback(DELETETickets, 'deleteTicket'));
+router.patch(`/tickets`, validateRole(['Volovan Admin', 'Scan Code']), ExpressCallback(PATCHTickets, 'editTicket'));
 
 export default router;
 

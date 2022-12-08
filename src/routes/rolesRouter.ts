@@ -8,7 +8,7 @@ import { DELETERoles, POSTRoles, PATCHRoles } from '../controllers/roles';
 const router = express.Router();
 
 router.use(validateToken);
-router.use(validateRole('Volovan Admin'));
+router.use(validateRole(['Volovan Admin']));
 router.post(`/roles`, ExpressCallback(POSTRoles, 'createRole'));
 router.post(`/roles/find`, ExpressCallback(POSTRoles, 'findRole'));
 router.delete(`/roles`, ExpressCallback(DELETERoles, 'deleteRole'));

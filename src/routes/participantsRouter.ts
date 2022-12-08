@@ -8,7 +8,7 @@ import { DELETEParticipants, POSTParticipants, PATCHParticipants } from '../cont
 const router = express.Router();
 
 router.use(validateToken);
-router.use(validateRole('Volovan Admin'));
+router.use(validateRole(['Volovan Admin']));
 router.post(`/participants`, ExpressCallback(POSTParticipants, 'createParticipant'));
 router.post(`/participants/find`, ExpressCallback(POSTParticipants, 'findParticipant'));
 router.delete(`/participants`, ExpressCallback(DELETEParticipants, 'deleteParticipant'));
