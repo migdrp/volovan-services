@@ -132,7 +132,13 @@ export class mongoDbAdapter {
       log.debug('[insertOne] Result: ', result);
       if (result.acknowledged) {
         const response = await db.collection(collection).findOne({ _id: result.insertedId });
-        return [response];
+
+
+        let insertedItem = { id: response._id, ...response } as any
+        delete insertedItem._id;
+
+        return [insertedItem];
+
       } else {
         throw new Error(`Error inserting data on ${collection} collection:`);
       }
@@ -177,6 +183,7 @@ export class mongoDbAdapter {
 
       if (response.length === 0)
         response = await this.findById({ id: _id }, collection)
+
 
       return response;
     } catch (error) {

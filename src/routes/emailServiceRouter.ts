@@ -3,6 +3,7 @@ import express from 'express';
 import { Logger, sendTicketsEmail } from '../utils';
 import { volovanDb } from '../adapters';
 import { validateRole } from '../middlewares';
+import { validateToken } from '../middlewares/validateToken';
 
 const log = new Logger('Email Service Router');
 
@@ -12,7 +13,7 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
 
-router.post('/manual', validateRole(['Volovan Admin']), async (req, res) => {
+router.post('/manual', validateToken, validateRole(['Volovan Admin']), async (req, res) => {
   log.debug('Email Service Online');
 
   if (!req.body || !req.body.orderId) {
@@ -81,7 +82,7 @@ router.post('/manual', validateRole(['Volovan Admin']), async (req, res) => {
 
 
   res.json({
-    status: 'Success',
+    status: 'success',
     message: `Email correctly sent to ${orderFound[0].customerEmail}`
   })
   return

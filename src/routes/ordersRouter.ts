@@ -8,9 +8,8 @@ import { POSTOrders, PATCHOrders } from '../controllers/orders';
 const router = express.Router();
 
 router.use(validateToken);
-router.use(validateRole(['Volovan Admin']));
-router.post(`/orders/find`, ExpressCallback(POSTOrders, 'findOrder'));
-router.patch(`/orders`, ExpressCallback(PATCHOrders, 'editOrder'));
+router.post(`/orders/find`, validateRole(['Volovan Admin']), ExpressCallback(POSTOrders, 'findOrder'));
+router.patch(`/orders`, validateRole(['Volovan Admin']), ExpressCallback(PATCHOrders, 'editOrder'));
 
 export default router;
 

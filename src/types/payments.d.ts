@@ -96,5 +96,10 @@ declare module Payments {
     createdOrder?: Entities.Orders.OrderData
   }
 
+  interface CashPaymentData {
+    personsData?: Entities.Persons.PersonData,
+    orderData?: Entities.Orders.OrderData
+  }
+
 
 }

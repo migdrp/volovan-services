@@ -38,8 +38,7 @@ export const prepareAccesPayment = async (data: Payments.StripePreparePaymentDat
     throw Error('Ocurrió un error durante la cración de la orden de compra.');
 
 
-  let createdOrder = { id: newOrder[0]['_id'], ...newOrder[0] }
-  delete createOrder['_id'];
+  let createdOrder = { ...newOrder[0] };
   log.debug('createdOrder: ', createdOrder);
 
   const stripeResponse = await StripePayments.findCustomerByNameAndEmail(`${createdOrder.customerFirstNames} ${createdOrder.customerLastNames}`, createdOrder.customerEmail)

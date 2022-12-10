@@ -1,7 +1,7 @@
 ///<reference path="../../types/types.d.ts" />
 
 
-import { prepareAccesPayment, cancelPaymentIntent, completeAccessPayment, searchPaymentIntent } from '../../use-cases/payments';
+import { prepareAccesPayment, cancelPaymentIntent, completeAccessPayment, searchPaymentIntent, cashAccessPayment } from '../../use-cases/payments';
 import { Logger } from '../../utils';
 
 const log = new Logger('POST Payments Controller')
@@ -69,6 +69,21 @@ export const POSTPayments: Utils.RESTController = async (httpRequest, usecase) =
 
         successMsg = 'Payment intent found  successfully...'
         responseData = await searchPaymentIntent(data) as any;
+
+      }
+    }
+
+    if (usecase === 'cashAccessPayment') {
+      if (Array.isArray(httpRequest.body)) throw new Error('This enpoint do not support arrays yet...');
+      else {
+
+        if (!httpRequest.body)
+          throw new Error('The request body can not be empty.');
+
+        const data: { id: string } = httpRequest.body;
+
+        successMsg = 'Payment intent found  successfully...'
+        responseData = await cashAccessPayment(data) as any;
 
       }
     }

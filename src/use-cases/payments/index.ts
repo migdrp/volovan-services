@@ -4,6 +4,7 @@ import { prepareAccesPayment } from './prepareAccesPayment';
 import { cancelPaymentIntent } from './cancelPaymentIntent';
 import { completeAccessPayment } from './completeAccessPayment';
 import { searchPaymentIntent } from './searchPaymentIntent';
+import { cashAccessPayment } from './cashAccessPayment';
 
 
 export const dep = {
@@ -17,5 +18,7 @@ export const dep = {
 export {
   prepareAccesPayment,
   cancelPaymentIntent,
-  completeAccessPayment, searchPaymentIntent
+  completeAccessPayment,
+  searchPaymentIntent,
+  cashAccessPayment
 }
