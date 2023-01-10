@@ -1,1 +1,1 @@
-web: npm run prod
+web: npm run cloud:dev

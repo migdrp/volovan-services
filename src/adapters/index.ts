@@ -11,4 +11,4 @@ export const dep = {
 
 
 
-export const volovanDb = new mongoDbAdapter(`volovan-${process.env.NODE_ENV === "production" ? "prod" : process.env.NODE_ENV === "development" ? "dev" : "dev"}`);
+export const volovanDb = new mongoDbAdapter(`volovan-${process.env.NODE_ENV === "production" ? "prod" : "dev"}`);

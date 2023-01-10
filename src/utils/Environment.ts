@@ -8,10 +8,10 @@ export const Environment = () => {
   console.info(`[Env] Configuring ${env} environment...`)
 
   if (!env)
-    throw Error('env argument must be "prod" or "dev"')
+    throw Error('env argument must be "prod" or "devlocal" or "devcloud"')
 
-  if (env !== 'prod' && env !== 'dev')
-    throw Error('env argument must be "prod" or "dev"')
+  if (env !== 'prod' && env !== 'devlocal' && env !== 'devcloud')
+    throw Error('env argument must be "prod" or "devlocal" or "devcloud"')
 
   dotenv.config({ path: `.env.${env}.env` });
 
