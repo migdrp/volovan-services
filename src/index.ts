@@ -23,7 +23,7 @@ async function main() {
     app.use(tokenPlacer);
 
     app.get("/", (req, res) => {
-      res.json({ message: "Welcome to Volovan Production API Services." });
+      res.json({ message: `Welcome to Volovan Production API Services. ${process.env.NODE_ENV === 'development' ? 'Development Cloud ⚙️' : 'With ❤️'}` });
     });
 
     app.get("/secure", validateToken, (req, res) => {
