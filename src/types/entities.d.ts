@@ -10,6 +10,7 @@ declare module Entities {
       id?: string;
       name?: string;
       description?: string;
+      organization?: string;
       dynamicRoutes?: Object;
 
       createdOn?: number;
@@ -29,6 +30,7 @@ declare module Entities {
       name?: string;
       email?: string;
       password?: string;
+      organization?: string;
       roles?: string[];
 
       createdOn?: number;
@@ -62,12 +64,14 @@ declare module Entities {
     type VolovanParticipant = typeof import('../entities/volovanParticipant').VolovanParticipant
 
     interface ParticipantData {
-      id?: string;
-      name?: string;
-      type?: string;
+      id?: string
+      name?: string
+      type?: string
+      description?: string
+      organization?: string
+
       images?: ParticipantImage[];
       docs?: ParticipantFile[];
-      description?: string;
       persons?: string[];
       socialMedia?: SocialMedia[];
 
@@ -106,6 +110,7 @@ declare module Entities {
       id?: string;
       name?: string;
       description?: string;
+      organization?: string;
       dateTimes?: number[];
       unlockedDatetime?: number;
       participants?: string[];
@@ -222,6 +227,47 @@ declare module Entities {
       type?: string;
       datetime?: number;
       scanedBy?: string;
+    }
+  }
+
+
+  export namespace Organizations {
+    type VolovanOrganization = typeof import('../entities/volovanOrganization').VolovanOrganization
+
+    interface OrganizationData {
+      id?: string;
+      name?: string;
+      type?: string;
+      description?: string;
+
+      images?: OrganizationImage[];
+      docs?: OrganizationFiles[];
+      socialMedia?: SocialMedia[];
+
+
+      createdOn?: number;
+      createdBy?: string;
+      modifiedOn?: number;
+      modifiedBy?: string;
+      deleted?: boolean;
+    }
+
+    interface OrganizationImage {
+      name?: string;
+      uri?: string;
+      backgorund?: string;
+    }
+
+    interface OrganizationFiles {
+      name?: string;
+      description?: string;
+      uri?: string;
+    }
+
+    interface SocialMedia {
+      name?: string;
+      description?: string;
+      uri?: string;
     }
   }
 

@@ -10,6 +10,7 @@ export class VolovanEvent {
   id: string;
   name: string;
   description: string;
+  organization: string;
   dateTimes: number[];
   unlockedDatetime: number;
   participants: string[];
@@ -34,11 +35,13 @@ export class VolovanEvent {
     id = dep.Id.makeId(),
     name,
     description = 'Event without description.',
+    organization,
+
     dateTimes,
     unlockedDatetime,
     participants,
     participantsTimes,
-    tickets,
+    tickets = [],
     images = [],
     docs = [],
     route,
@@ -64,6 +67,8 @@ export class VolovanEvent {
     this.id = id;
     this.name = name;
     this.description = description;
+    this.organization = organization;
+
     this.dateTimes = dateTimes;
     this.unlockedDatetime = unlockedDatetime;
     this.participants = participants;
@@ -90,6 +95,7 @@ export class VolovanEvent {
       id: this.id,
       name: this.name,
       description: this.description,
+      organization: this.organization,
       dateTimes: this.dateTimes,
       unlockedDatetime: this.unlockedDatetime,
       participants: this.participants,

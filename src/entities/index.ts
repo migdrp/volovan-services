@@ -8,6 +8,7 @@ import { VolovanParticipant } from './volovanParticipant';
 import { VolovanTicket } from './volovanTicket';
 import { VolovanPerson } from './volovanPerson';
 import { VolovanOrder } from './volovanOrder';
+import { VolovanOrganization } from './volovanOrganization';
 
 export const dep = {
   Id,
@@ -25,5 +26,6 @@ export {
   VolovanParticipant,
   VolovanTicket,
   VolovanPerson,
-  VolovanOrder
+  VolovanOrder,
+  VolovanOrganization
 }

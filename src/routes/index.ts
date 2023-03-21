@@ -9,6 +9,7 @@ import publicRouter from './publicRouter';
 import ordersRouter from './ordersRouter';
 import paymentsRouter from './paymentsRouter';
 import emailServiceRouter from './emailServiceRouter'
+import organizationsRouter from './organizationsRouter';
 
 import { AuthTokens } from '../utils';
 
@@ -27,6 +28,7 @@ export {
   publicRouter,
   ordersRouter,
   paymentsRouter,
-  emailServiceRouter
+  emailServiceRouter,
+  organizationsRouter
 
 }

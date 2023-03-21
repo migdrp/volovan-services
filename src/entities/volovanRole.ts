@@ -10,6 +10,7 @@ export class VolovanRole {
   id: string;
   name: string;
   description: string;
+  organization: string;
   dynamicRoutes: Object;
 
   createdOn: number;
@@ -23,6 +24,7 @@ export class VolovanRole {
     id = dep.Id.makeId(),
     name,
     description = 'Role without description.',
+    organization,
     dynamicRoutes,
 
     createdOn = Date.now(),
@@ -38,6 +40,7 @@ export class VolovanRole {
     this.id = id;
     this.name = name;
     this.description = description;
+    this.organization = organization;
     this.dynamicRoutes = dynamicRoutes;
 
     this.createdOn = createdOn;
@@ -53,6 +56,7 @@ export class VolovanRole {
       id: this.id,
       name: this.name,
       description: this.description,
+      organization: this.organization,
       dynamicRoutes: this.dynamicRoutes,
 
       createdOn: this.createdOn,
