@@ -11,6 +11,8 @@ export class VolovanUser {
   email: string;
   password: string;
   roles: string[] = [];
+  organization: string;
+
 
   createdOn: number;
   createdBy: string;
@@ -24,6 +26,7 @@ export class VolovanUser {
     email,
     password,
     roles = [],
+    organization,
     createdOn = Date.now(),
     createdBy,
     modifiedOn = Date.now(),
@@ -44,7 +47,8 @@ export class VolovanUser {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.password = password
+    this.password = password;
+    this.organization = organization;
 
     this.roles = roles;
     this.createdOn = createdOn;
@@ -65,6 +69,7 @@ export class VolovanUser {
       name: this.name,
       email: this.email,
       password: this.password,
+      organization: this.organization,
       roles: this.roles,
       createdOn: this.createdOn,
       createdBy: this.createdBy,
